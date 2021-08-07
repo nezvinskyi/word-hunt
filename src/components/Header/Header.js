@@ -1,42 +1,50 @@
+import { createMuiTheme, TextField, ThemeProvider } from '@material-ui/core';
+import React from 'react';
 import './Header.css';
-import { createTheme, TextField, ThemeProvider, MenuItem } from '@material-ui/core/';
-import categories from '../../data/category';
+import MenuItem from '@material-ui/core/MenuItem';
+import countries from '../../data/category';
+import { debounce } from 'lodash';
 
-const Header = ({ category, setCategory, word, setWord, lightMode }) => {
-  const darkTheme = createTheme({
+const Header = ({ category, setCategory, setWord, word, setMeanings, LightTheme }) => {
+  const darkTheme = createMuiTheme({
     palette: {
       primary: {
-        main: lightMode ? '#000' : '#fff',
+        main: LightTheme ? '#000' : '#fff',
       },
-      type: lightMode ? 'light' : 'dark',
+      type: LightTheme ? 'light' : 'dark',
     },
   });
 
-  const handleChange = language => {
-    setCategory(language);
+  const handleChange = e => {
+    setCategory(e.target.value);
     setWord('');
+    setMeanings([]);
   };
 
+  const handleText = debounce(text => {
+    setWord(text);
+  }, 500);
+
   return (
-    <header className="header">
-      <h1 className="title">{word ? word : 'Word Hunt'}</h1>
+    <div className="header">
+      <span className="title">{word ? word : 'Word Hunt'}</span>
       <div className="inputs">
         <ThemeProvider theme={darkTheme}>
           <TextField
             className="search"
-            label="Search a word"
-            value={word}
-            onChange={e => setWord(e.target.value)}
+            id="filled-basic"
+            // value={word}
+            label="Search a Word"
+            onChange={e => handleText(e.target.value)}
           />
-
           <TextField
-            className="select"
             select
             label="Language"
             value={category}
-            onChange={e => handleChange(e.target.value)}
+            onChange={e => handleChange(e)}
+            className="select"
           >
-            {categories.map(option => (
+            {countries.map(option => (
               <MenuItem key={option.label} value={option.label}>
                 {option.value}
               </MenuItem>
@@ -44,7 +52,7 @@ const Header = ({ category, setCategory, word, setWord, lightMode }) => {
           </TextField>
         </ThemeProvider>
       </div>
-    </header>
+    </div>
   );
 };
 
