@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import Definitions from './components/Definitions/Definitions';
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 function App() {
   const [word, setWord] = useState('');
@@ -23,14 +24,12 @@ function App() {
     }
   };
 
-  console.log(meanings);
-
   useEffect(() => {
     dictionaryApi();
     // eslint-disable-next-line
   }, [word, category]);
 
-  const PurpleSwitch = withStyles({
+  const ThemeSwitch = withStyles({
     switchBase: {
       color: grey[50],
       '&$checked': {
@@ -65,7 +64,7 @@ function App() {
       >
         <div style={{ position: 'absolute', top: 0, right: 15, paddingTop: 10 }}>
           <span>{LightTheme ? 'Dark' : 'Light'} Mode</span>
-          <PurpleSwitch checked={LightTheme} onChange={() => setLightTheme(!LightTheme)} />
+          <ThemeSwitch checked={LightTheme} onChange={() => setLightTheme(!LightTheme)} />
         </div>
         <Header
           setWord={setWord}
@@ -83,6 +82,7 @@ function App() {
             category={category}
           />
         )}
+        <Footer />
       </Container>
     </div>
   );
