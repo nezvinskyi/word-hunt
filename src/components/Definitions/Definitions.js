@@ -6,7 +6,14 @@ const Definitions = ({ meanings, word, LightTheme, category }) => {
     <div className="meanings">
       {meanings[0] && word && category === 'en' && (
         <audio
-          style={{ backgroundColor: '#fff', borderRadius: 10 }}
+          className="audio"
+          style={{
+            borderRadius: '10px',
+            width: '100%',
+            // backgroundColor: LightTheme ? '#3b5360' : 'white',
+            overflow: 'hidden',
+            color: LightTheme ? 'white' : 'black',
+          }}
           src={meanings[0].phonetics[0] && meanings[0].phonetics[0].audio}
           controls
         >
@@ -34,7 +41,7 @@ const Definitions = ({ meanings, word, LightTheme, category }) => {
                     <b>Example :</b> {def.example}
                   </span>
                 )}
-                {def.synonyms && (
+                {def.synonyms.length !== 0 && (
                   <span>
                     <b>Synonyms :</b> {def.synonyms.map(s => `${s}, `)}
                   </span>
